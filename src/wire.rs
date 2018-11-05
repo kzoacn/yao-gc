@@ -1,6 +1,6 @@
 
 
-
+#[derive(Copy,Clone,Debug)]
 pub struct Wire{
     pub val : u128,
 }
