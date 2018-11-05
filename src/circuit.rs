@@ -1,6 +1,7 @@
 use gate::Gate;
 use wire::Wire;
 use std::collections::VecDeque;
+#[derive(Debug)]
 pub struct Circuit{
     pub gates : Vec<Gate>,
     pub fan_in : Vec<Vec<usize> >,
@@ -15,7 +16,8 @@ impl Circuit{
     }
 
     pub fn add_gate(&mut self,gate :Gate,fin : Vec<usize>) -> usize{
-        let mut out = self.gates.len();
+        let out = self.gates.len();
+        self.fan_in.push(Vec::new());
         self.gates.push(gate);
         self.fan_in[out]=fin;
         out
@@ -29,6 +31,7 @@ impl Circuit{
         let mut deg : Vec<usize> =vec![];
         fan_out.resize(self.gates.len(), Vec::new());
         deg.resize(self.gates.len(),0);
+        output.resize(self.gates.len(),None);
 
         for i in 0..self.fan_in.len(){
             deg[i]=self.fan_in[i].len();
@@ -69,12 +72,10 @@ impl Circuit{
     pub fn dec(&self,c : Vec<(usize,Wire)>) -> Vec<(usize,u8)>{
         let mut ans:Vec<(usize,u8)>=vec![];
         for (i,w) in &c{
-            if let Gate::Output{out} = &self.gates[*i]{
-                if out[0]==w.val {
-                    ans.push((*i,0));
-                }else{
-                    ans.push((*i,1));
-                }
+            if self.gates[*i].get_output(0).val==w.val {
+                ans.push((*i,0));
+            }else{
+                ans.push((*i,1));
             }
         }
         ans

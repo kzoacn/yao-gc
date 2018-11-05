@@ -28,7 +28,7 @@ pub fn from_bytes(array : [u8;16]) -> u128{
 
 pub fn enc(key:u128,plain:u128) -> u128{
     let key_bytes=to_bytes(key);
-    let plain_bytes=to_bytes(key);
+    let plain_bytes=to_bytes(plain);
     let mut cipher_bytes=[0_u8;16];
     let aes=crypto::aessafe::AesSafe128Encryptor::new(&key_bytes);
     use crypto::symmetriccipher::BlockEncryptor;
@@ -39,7 +39,7 @@ pub fn enc(key:u128,plain:u128) -> u128{
 
 pub fn dec(key:u128,cipher:u128) -> u128{
     let key_bytes=to_bytes(key);
-    let cipher_bytes=to_bytes(key);
+    let cipher_bytes=to_bytes(cipher);
     let mut plain_bytes=[0_u8;16];
     let aes=crypto::aessafe::AesSafe128Decryptor::new(&key_bytes);
     use crypto::symmetriccipher::BlockDecryptor;

@@ -4,7 +4,7 @@ use wire::Wire;
 use aes::enc;
 use aes::dec;
 use aes::has_zeros;
-
+#[derive(Debug)]
 pub enum Gate{
     Input {out:Vec<u128>},
     Output {out:Vec<u128>},
@@ -52,7 +52,7 @@ impl Gate{
                 assert_eq!(wires.len(),2);
                 let mut ans=Wire::new();
                 for c in tab{
-                    let plain=dec(wires[1].val,dec(wires[0].val,*c));
+                    let plain=dec(wires[0].val,dec(wires[1].val,*c));
                     if has_zeros(plain) {
                         ans=Wire::init(plain);
                     }
@@ -63,7 +63,7 @@ impl Gate{
                 assert_eq!(wires.len(),2);
                 let mut ans=Wire::new();
                 for c in tab{
-                    let plain=dec(wires[1].val,dec(wires[0].val,*c));
+                    let plain=dec(wires[0].val,dec(wires[1].val,*c));
                     if has_zeros(plain) {
                         ans=Wire::init(plain);
                     }
@@ -74,7 +74,7 @@ impl Gate{
                 assert_eq!(wires.len(),1);
                 let mut ans=Wire::new();
                 for c in tab{
-                    let plain=dec(wires[1].val,dec(wires[0].val,*c));
+                    let plain=dec(wires[0].val,dec(wires[1].val,*c));
                     if has_zeros(plain) {
                         ans=Wire::init(plain);
                     }

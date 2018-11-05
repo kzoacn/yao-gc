@@ -14,9 +14,14 @@ fn main() {
     let a_in = builder.input();
     let b_in = builder.input();
     let and = builder.and(a_in, b_in);
-
     let cir = builder.cir;
-    let input = vec![(a_in,cir.gates[a_in].get_output(0)),(b_in,cir.gates[b_in].get_output(1))];
+
+    println!("{:?}",cir);
+
+    let input = vec![(a_in,cir.gates[a_in].get_output(0)),(b_in,cir.gates[b_in].get_output(0))];
+
+    println!("{:?}",input);
+
     let wires=cir.eval(input);
     let mut out : Vec<(usize,Wire)>=vec![];
     match wires[and]{
@@ -27,5 +32,6 @@ fn main() {
             panic!("boom!");
         },
     };
-    println!("{:?}",cir.eval(out));
+    println!("{:?}",out);
+    println!("{:?}",cir.dec(out));
 }
