@@ -13,12 +13,13 @@ fn main() {
     let mut builder = Builder::new();
     let a_in = builder.input();
     let b_in = builder.input();
-    let and = builder.and(a_in, b_in);
+    let xor = builder.xor(a_in, b_in);
+    let and = builder.and(a_in,xor);
     let cir = builder.cir;
 
     println!("{:?}",cir);
 
-    let input = vec![(a_in,cir.gates[a_in].get_output(0)),(b_in,cir.gates[b_in].get_output(0))];
+    let input = vec![(a_in,cir.gates[a_in].get_output(1)),(b_in,cir.gates[b_in].get_output(1))];
 
     println!("{:?}",input);
 

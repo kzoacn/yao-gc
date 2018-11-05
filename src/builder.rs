@@ -57,4 +57,41 @@ impl Builder{
         }
         self.cir.add_gate(Gate::And{tab,out},vec![x,y])
     }
+    pub fn xor(&mut self,x : usize,y :usize) ->usize{
+        let out:Vec<u128>=vec![rand::random::<u64>() as u128,rand::random::<u64>() as u128];
+        let mut tab:Vec<u128>=vec![];
+        let mut in_val = [[0_u128,0_u128],[0_u128,0_u128]];
+        for i in 0..in_val.len(){
+            let id=if i==0 {x} else {y};
+            in_val[i]=match &self.cir.gates[id]{
+                Gate::Input{out} =>{
+                    [out[0],out[1]]
+                },
+                Gate::Output{out} =>{
+                    [out[0],out[1]]
+                },
+                Gate::And{tab:_,out} =>{
+                    [out[0],out[1]]
+                },
+                Gate::Xor{tab:_,out} =>{
+                    [out[0],out[1]]
+                },
+                Gate::Not{tab:_,out} =>{
+                    [out[0],out[1]]
+                },
+            };
+        }
+        for i in 0..in_val[0].len(){
+            for j in 0..in_val[1].len(){
+                let c=enc(in_val[1][j],enc(in_val[0][i],out[(i^j) as usize]));
+                tab.push(c);
+            }
+        }
+        for i in 1..tab.len(){
+            use rand::Rng;
+            let pos = rand::thread_rng().gen_range(0,i);
+            tab.swap(i,pos);
+        }
+        self.cir.add_gate(Gate::And{tab,out},vec![x,y])
+    }
 }
